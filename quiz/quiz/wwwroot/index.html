@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kvíz App</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .quiz-card {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .question {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        .options {
+            margin-left: 10px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 1.2em;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Elérhető Kvízek</h1>
+
+    <div id="quiz-list">
+        <p>Betöltés...</p>
+    </div>
+
+    <hr>
+
+    <div id="active-quiz-container" style="display:none;">
+        <h2 id="quiz-title"></h2>
+        <form id="quiz-form">
+            <div id="questions-container"></div>
+            <br>
+            <button type="button" onclick="submitQuiz()">Beküldés</button>
+        </form>
+    </div>
+
+    <div id="result"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>

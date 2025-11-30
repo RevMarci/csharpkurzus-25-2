@@ -1,26 +1,115 @@
 [
   {
     "Id": 1,
-    "Title": "Egyszer\u0171 Matek",
+    "Title": "Egyszerű Matek",
     "Questions": [
       {
-        "Text": "Mennyi 2 \u002B 2?",
-        "Options": [
-          "3",
-          "4",
-          "5",
-          "6"
-        ],
+        "Text": "Mennyi 2 + 2?",
+        "Options": ["3", "4", "5", "6"],
         "CorrectOptionIndex": 1
       },
       {
         "Text": "Mennyi 10 / 2?",
+        "Options": ["5", "2", "10", "0"],
+        "CorrectOptionIndex": 0
+      },
+      {
+        "Text": "Mennyi 7 - 3?",
+        "Options": ["5", "4", "3", "2"],
+        "CorrectOptionIndex": 1
+      }
+    ]
+  },
+  {
+    "Id": 2,
+    "Title": "Alapvető Informatika",
+    "Questions": [
+      {
+        "Text": "Mit jelent a 'CPU'?",
         "Options": [
-          "5",
-          "2",
-          "10",
-          "0"
+          "Central Process Unit",
+          "Central Processing Unit",
+          "Computer Personal Unit",
+          "Control Program Utility"
         ],
+        "CorrectOptionIndex": 1
+      },
+      {
+        "Text": "Melyik NEM programozási nyelv?",
+        "Options": ["Java", "Python", "MySQL", "C#"],
+        "CorrectOptionIndex": 2
+      },
+      {
+        "Text": "Mi az operációs rendszer feladata?",
+        "Options": [
+          "Hardver kezelése",
+          "Képek szerkesztése",
+          "Weboldalak készítése",
+          "Játékok futtatásának tiltása"
+        ],
+        "CorrectOptionIndex": 0
+      }
+    ]
+  },
+  {
+    "Id": 3,
+    "Title": "Általános Műveltség",
+    "Questions": [
+      {
+        "Text": "Melyik ország fővárosa Berlin?",
+        "Options": ["Ausztria", "Németország", "Hollandia", "Belgium"],
+        "CorrectOptionIndex": 1
+      },
+      {
+        "Text": "Ki festette a Mona Lisát?",
+        "Options": ["Van Gogh", "Leonardo da Vinci", "Michelangelo", "Picasso"],
+        "CorrectOptionIndex": 1
+      }
+    ]
+  },
+  {
+    "Id": 4,
+    "Title": "Természetismeret",
+    "Questions": [
+      {
+        "Text": "Melyik a legnagyobb bolygó a Naprendszerben?",
+        "Options": ["Mars", "Szaturnusz", "Jupiter", "Föld"],
+        "CorrectOptionIndex": 2
+      },
+      {
+        "Text": "Mi a víz kémiai jele?",
+        "Options": ["H2O", "O2", "CO2", "He"],
+        "CorrectOptionIndex": 0
+      },
+      {
+        "Text": "Melyik állat emlős?",
+        "Options": ["Kígyó", "Cápa", "Delfin", "Béka"],
+        "CorrectOptionIndex": 2
+      },
+      {
+        "Text": "Melyik NEM fa?",
+        "Options": ["Tölgy", "Nyír", "Fenyő", "Rózsa"],
+        "CorrectOptionIndex": 3
+      }
+    ]
+  },
+  {
+    "Id": 5,
+    "Title": "Közlekedési alapismeretek",
+    "Questions": [
+      {
+        "Text": "Mit jelent a piros lámpa a közlekedési jelzőlámpán?",
+        "Options": ["Megállás", "Óvatos továbbhaladás", "Jobbra kanyarodás kötelező", "Elsőbbségadás"],
+        "CorrectOptionIndex": 0
+      },
+      {
+        "Text": "Milyen jármű a kerékpár?",
+        "Options": ["Motoros jármű", "Segédmotoros jármű", "Nem gépi meghajtású jármű", "Autó"],
+        "CorrectOptionIndex": 2
+      },
+      {
+        "Text": "Melyik oldalról előzünk Magyarországon?",
+        "Options": ["Bal", "Jobb", "Mindkettő", "Sehonnan"],
         "CorrectOptionIndex": 0
       }
     ]
