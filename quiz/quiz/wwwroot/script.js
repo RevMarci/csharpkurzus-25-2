@@ -25,10 +25,18 @@ function showCreateForm() {
 // --- LISTÁZÁS ---
 
 async function loadQuizzes() {
+    const listDiv = document.getElementById('quiz-list');
+    
     try {
         const response = await fetch('/Quiz/list');
+        
+        if (!response.ok) {
+            const errorText = await response.text();
+            listDiv.innerHTML = `<p style="color:red">Hiba történt a betöltéskor: ${errorText}</p>`;
+            return;
+        }
+
         const quizzes = await response.json();
-        const listDiv = document.getElementById('quiz-list');
         listDiv.innerHTML = '';
 
         if (!quizzes || quizzes.length === 0) {
@@ -38,7 +46,6 @@ async function loadQuizzes() {
 
         quizzes.forEach(quiz => {
             const btn = document.createElement('button');
-            // Figyelem: A C# DTO-ban 'Title' van, JSON-ben nagybetűvel jöhet
             btn.textContent = quiz.title || quiz.Title; 
             btn.className = "btn-primary";
             btn.style.margin = "5px";
@@ -47,7 +54,7 @@ async function loadQuizzes() {
         });
     } catch (error) {
         console.error("Hiba:", error);
-        listDiv.innerHTML = '<p>Hiba a betöltéskor.</p>';
+        listDiv.innerHTML = '<p style="color:red">Nem sikerült elérni a szervert.</p>';
     }
 }
 
