@@ -6,7 +6,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<QuizService>();
 
 builder.Services.AddEndpointsApiExplorer();
