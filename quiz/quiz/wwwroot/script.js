@@ -121,7 +121,7 @@ async function submitQuiz() {
         const result = await response.json();
         
         const resultDiv = document.getElementById('result');
-        resultDiv.textContent = `Pontszám: ${result.score} / ${result.totalQuestions} - ${(result.score / result.totalQuestions) * 100}`;
+        resultDiv.textContent = `Pontszám: ${result.score} / ${result.totalQuestions} - ${(result.score / result.totalQuestions) * 100}%`;
         resultDiv.style.color = result.score === result.totalQuestions ? "green" : "orange";
 
     } catch (error) { console.error(error); }

@@ -1,8 +1,8 @@
 ﻿namespace quiz.Models
 {
-    public class QuizSubmission
+    public record QuizSubmission
     {
-        public int QuizId { get; set; }
-        public List<int> SelectedAnswerIndices { get; set; } = new();
+        public int QuizId { get; init; }
+        public List<int> SelectedAnswerIndices { get; init; } = new();
     }
 }
