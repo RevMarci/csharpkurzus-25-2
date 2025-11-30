@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using quiz.Models;
+using quiz.Exceptions;
 
 namespace quiz.Services
 {
@@ -9,13 +10,21 @@ namespace quiz.Services
 
         public List<Quiz> getQuizzesInternal()
         {
-            if (!File.Exists(FilePath)) return new List<Quiz>();
+            try
+            {
+                if (!File.Exists(FilePath)) return new List<Quiz>();
 
-            var json = File.ReadAllText(FilePath);
-            if (string.IsNullOrWhiteSpace(json)) return new List<Quiz>();
+                var json = File.ReadAllText(FilePath);
+                if (string.IsNullOrWhiteSpace(json)) return new List<Quiz>();
 
-            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-            return JsonSerializer.Deserialize<List<Quiz>>(json, options) ?? new List<Quiz>();
+                var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                return JsonSerializer.Deserialize<List<Quiz>>(json, options) ?? new List<Quiz>();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ERROR] {ex.Message}");
+                return new List<Quiz>();
+            }
         }
 
         public List<QuizPublic> getQuizzesPublic()
@@ -42,26 +51,79 @@ namespace quiz.Services
 
         public void createQuiz(Quiz quiz)
         {
-            var quizzes = getQuizzesInternal();
-            int newId = quizzes.Count > 0 ? quizzes.Max(q => q.Id) + 1 : 1;
-            quiz.Id = newId;
+            if (string.IsNullOrWhiteSpace(quiz.Title))
+            {
+                throw new QuizValidationException("A kvíz címét kötelező megadni!");
+            }
 
-            quizzes.Add(quiz);
-            saveQuizzes(quizzes);
+            if (quiz.Questions == null || quiz.Questions.Count == 0)
+            {
+                throw new QuizValidationException("A kvíznek legalább 1 kérdést tartalmaznia kell!");
+            }
+
+            foreach (var q in quiz.Questions)
+            {
+                if (string.IsNullOrWhiteSpace(q.Text))
+                {
+                    throw new QuizValidationException("Minden kérdésnek kell, hogy legyen szövege!");
+                }
+
+                if (q.Options == null || q.Options.Count < 2)
+                {
+                    throw new QuizValidationException($"A '{q.Text}' kérdéshez legalább 2 válaszlehetőséget kell megadni!");
+                }
+
+                if (q.CorrectOptionIndex < 0 || q.CorrectOptionIndex >= q.Options.Count)
+                {
+                    throw new QuizValidationException($"A '{q.Text}' kérdésnél érvénytelen a helyes válasz indexe!");
+                }
+            }
+
+            try
+            {
+                var quizzes = getQuizzesInternal();
+                int newId = quizzes.Count > 0 ? quizzes.Max(q => q.Id) + 1 : 1;
+                quiz.Id = newId;
+
+                quizzes.Add(quiz);
+                saveQuizzes(quizzes);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[HIBA] Nem sikerült létrehozni a kvízt: {ex.Message}");
+                throw;
+            }
         }
 
         public int evaluateQuiz(int quizId, List<int> userAnswers)
         {
             var quizzes = getQuizzesInternal();
             var quiz = quizzes.FirstOrDefault(q => q.Id == quizId);
-            if (quiz == null) return 0;
+
+            if (quiz == null)
+            {
+                throw new QuizValidationException("A kért kvíz nem található!");
+            }
+
+            if (userAnswers == null || userAnswers.Count != quiz.Questions.Count)
+            {
+                throw new QuizValidationException($"A kvíz {quiz.Questions.Count} kérdést tartalmaz, de te {userAnswers?.Count ?? 0} választ küldtél!");
+            }
+
+            if (userAnswers.Any(answer => answer == -1))
+            {
+                throw new QuizValidationException("Nem töltötted ki az összes kérdést! Kérlek válaszolj mindegyikre.");
+            }
 
             int score = 0;
             for (int i = 0; i < quiz.Questions.Count; i++)
             {
-                if (i < userAnswers.Count && userAnswers[i] == quiz.Questions[i].CorrectOptionIndex)
+                if (userAnswers[i] >= 0 && userAnswers[i] < quiz.Questions[i].Options.Count)
                 {
-                    score++;
+                    if (userAnswers[i] == quiz.Questions[i].CorrectOptionIndex)
+                    {
+                        score++;
+                    }
                 }
             }
             return score;
@@ -69,8 +131,16 @@ namespace quiz.Services
 
         private void saveQuizzes(List<Quiz> quizzes)
         {
-            var json = JsonSerializer.Serialize(quizzes, new JsonSerializerOptions { WriteIndented = true });
-            File.WriteAllText(FilePath, json);
+            try
+            {
+                var json = JsonSerializer.Serialize(quizzes, new JsonSerializerOptions { WriteIndented = true });
+                File.WriteAllText(FilePath, json);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[HIBA] Nem sikerült menteni a fájlt: {ex.Message}");
+                throw;
+            }
         }
     }
 }

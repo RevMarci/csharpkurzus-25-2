@@ -114,17 +114,22 @@ async function submitQuiz() {
         });
         
         if (!response.ok) {
-            alert("Hiba történt a kiértékeléskor.");
+            const errorText = await response.text();
+            alert("Hiba: " + errorText);
             return;
         }
 
         const result = await response.json();
         
         const resultDiv = document.getElementById('result');
-        resultDiv.textContent = `Pontszám: ${result.score} / ${result.totalQuestions} - ${(result.score / result.totalQuestions) * 100}%`;
+        const percentage = Math.round((result.score / result.totalQuestions) * 100);
+        resultDiv.textContent = `Eredmény: ${result.score} / ${result.totalQuestions} (${percentage}%)`;
         resultDiv.style.color = result.score === result.totalQuestions ? "green" : "orange";
 
-    } catch (error) { console.error(error); }
+    } catch (error) { 
+        console.error(error);
+        alert("Hálózati hiba történt.");
+    }
 }
 
 // --- ÚJ KVÍZ LÉTREHOZÁSA ---
